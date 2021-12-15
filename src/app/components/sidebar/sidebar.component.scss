@@ -1,0 +1,37 @@
+.myInputFile{
+    background-color: transparent;
+    border: 1px solid #fd7e14;
+    color: var(--text-color);
+    margin-top: 2%;
+    padding: 5px;
+}
+
+.overlayImage{
+    display: none;
+    position: absolute;
+    margin-top: 0%;
+    margin-left: -1%;
+    width: 40%;
+    height: 15%;
+    background-color: black;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+#imageProfile:hover + .overlayImage{
+    display: flex;
+}
+
+.overlayImage:hover{
+    display: flex;
+}
+
+.myheight{
+    height: 90vh;
+}
+
+.myoverflow{
+    overflow: hidden;
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,192 @@
+<div *ngIf="isCompleteLoaded">
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- NAVBAR --------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <nav class="col-12 sticky-top" *ngIf="isCompleteLoaded">
+        <p-menubar [style]="{'z-index':'99'}" [model]="items">
+            <ng-template pTemplate="start">
+                <i class="pi pi-fw pi-cloud" [style]="{'color':'var(--primary-color)','font-size':'2rem'}"></i>
+            </ng-template>
+            <ng-template pTemplate="end">
+                <p-chip 
+                label="{{this.token.nameid}}" 
+                image= "{{profileImage}}" 
+                styleClass="px-3 custom-chip" 
+                (click)="sideBar = true">
+                </p-chip>
+            </ng-template>
+        </p-menubar>
+    </nav>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- END NAVBAR -----------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------- PRINCIPAL CONTAINER -------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <article class="col-12 my-container">
+
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        --------------------------------------------------------------------- HEADER -------------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+        <header #header class="d-flex flex-column flex-lg-row col-12">
+            <div #breadcrumb class="col-12 col-lg-9">
+                <p-breadcrumb (onItemClick)="breadcrumbClicked($event.item)" [model]="Breadcrumb" [home]="home" [style]="{'border':'none'}" *ngIf="!refreshBread"></p-breadcrumb>
+            </div>
+            <div id="diskUsagePanel" #diskUsed class="d-flex flex-column flex-lg-row justify-content-end align-items-center col-12 col-lg-3 px-4 px-lg-2 py-2">
+                <div class="d-flex justify-content-end myjustify align-items-center col-12 col-lg-12">
+                    <span class="d-block" [style]="{'margin-right':'2%'}">{{lang.dropdowndisk.text}}</span>
+                    <p-dropdown [options]="disks" [(ngModel)]="rootPath" (onChange)="changeRootPath()" optionLabel="tag"></p-dropdown>
+                </div>
+                <div class="d-flex justify-content-end align-items-center col-12 mt-2 mt-lg-0">
+                    <span class="col-4 col-lg-3">{{lang.progressBar.text}}</span>
+                    <div class="col-8 col-lg-7">
+                        <p-progressBar [value]="diskPercentage | number:'1.2-2'"></p-progressBar>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        --------------------------------------------------------------------- END HEADER -------------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        ------------------------------------------------------------------------ TABLE -------------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+        <section class="panel" [style]="{'background-color':'var(--surface-b)'}">
+            <app-table [data]="data" [lang]="globalLang.table" [globalPath]="Breadcrumb" (path)="setPath($event)" *ngIf="!loading"></app-table>
+        </section>
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        --------------------------------------------------------------------- END TABLE -------------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    </article>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------- END PRINCIPAL CONTAINER ----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------ UPLOAD FILE DIALOG ----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-dialog header="{{lang.dialogfileupload.header}}" [(visible)]="displayMaximizable" [modal]="true" styleClass="col-12 col-lg-8 col-xl-7" [maximizable]="true" [baseZIndex]="20" [draggable]="false" [resizable]="true">
+        <p-fileUpload [disabled]="isUploading" [showUploadButton]="!isUploading" [showCancelButton]="!isUploading" [files]="myfiles" uploadLabel="{{lang.fileUpload.uploadLabel}}" cancelLabel="{{lang.fileUpload.cancelLabel}}" chooseLabel="{{lang.fileUpload.chooseLabel}}" [style]="{'width':'100%'}" [customUpload]="true" [multiple]="true" (uploadHandler)="onUpload($event)" (onClear)="showFileModal(false)">
+            <ng-template pTemplate="toolbar">
+                <div class="d-flex justify-content-center align-items-center mt-2" *ngIf="isUploading"><p-progressSpinner [style]="{width: '50px', height: '30px'}"></p-progressSpinner>{{lang.dialogfileupload.uploadingtxt}}</div>
+                <div class="d-flex justify-content-center align-items-center mt-2 mr-2 col-3" *ngIf="reachMaxSize"><i class="pi pi-ban text-danger" style="margin-right: 2%;"></i><span>{{lang.dialogfileupload.exceeds}}</span></div>
+                <div class="d-flex justify-content-end align-items-center mt-2"><span>{{lang.dialogfileupload.totalsize}}</span></div>
+            </ng-template>
+        </p-fileUpload>
+    </p-dialog>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------ END UPLOAD FILE DIALOG -------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------ CREATE FOLDER DIALOG ----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-dialog header="{{lang.dialogcreatefolder.header}}" [(visible)]="displayMaximizableFolder" [modal]="true" styleClass="col-12 col-lg-4 col-xl-3" [maximizable]="true" [baseZIndex]="20" [draggable]="false" [resizable]="true">
+            <ng-template pTemplate="content">
+                <form class="col-12" #createFolderForm="ngForm" (submit)="onSubmitFolder($event, folderName, createFolderForm)">
+                    <div class="d-flex justify-content-center align-items-center col-12 px-0 py-5 p-lg-4">
+                            <span class="p-float-label p-input-icon-left col-12">
+                                <i class="pi pi-folder"></i>
+                                <input #folderName class="col-12" type="text" id="inputtext-left" name="folderName" id="folderNameInput" ngModel required pInputText > 
+                                <label for="inputtext-left">{{lang.dialogcreatefolder.textinput}}</label>
+                            </span>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center col-12 p-0 p-lg-2 mt-4 mt-lg-0">
+                        <button class="p-button-danger p-button-outlined" pButton type="button" label="{{lang.dialogcreatefolder.btncancel}}" icon="pi pi-times" [style]="{'margin-right':'2%'}" [loading]="isCreatingFolder" (click)="showFolderModal(false)"></button>
+                        <button class="p-button-success p-button-outlined" pButton type="submit" label="{{lang.dialogcreatefolder.btnsubmit}}" icon="pi pi-plus" [disabled]="!createFolderForm.valid" [loading]="isCreatingFolder"></button>
+                    </div>   
+                </form>
+            </ng-template>
+    </p-dialog>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------- END CREATE FOLDER DIALOG --------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- PRINT DIRECT DIALOG --------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-dialog header="{{lang.printdialog.header}}" [(visible)]="displayPrintDialog" [modal]="true" styleClass="col-12 col-lg-4" [maximizable]="true" [baseZIndex]="20" [draggable]="false" [resizable]="true" [contentStyle]="{height: '100vh'}" (window:keyup.esc)="displayPrintDialog=false" *ngIf="displayPrintDialog">
+        <ng-template pTemplate="content">
+            <div class="d-flex flex-column my-print-dialog align-items-center h-100 col-12">
+                <h5>{{lang.printdialog.selectfile}}</h5>
+                <input #inputFile type="file" style='display: none;' (change)="filetoprint($event)"/>
+                <button class="p-button-outlined" [ngClass]="{'p-button-danger': isNotPrintable}" pButton pRipple type="button" icon="pi pi-plus" label="{{fileToPrint.name}}" (click)="lauchFileInput(inputFile)"></button>
+                <div class="d-flex justify-content-center col-12 bg-danger text-white p-2 mt-2" *ngIf="isNotPrintable">
+                    <span class="text-center">{{lang.printdialog.error.notprintable}}</span>
+                </div>
+                <h5 class="mb-2 mt-4">{{lang.printdialog.select}}</h5>
+                <p-dropdown [options]="printersList" [(ngModel)]="selectedPrinter" optionLabel="printerName">
+                    <ng-template let-printer pTemplate="item">
+                        <i class="pi pi-check-circle mr-2 text-success"*ngIf="printer.printerStatus=='Online'"></i>
+                        <i class="pi pi-ban mr-2 text-danger"*ngIf="printer.printerStatus=='Offline'"></i>
+                        {{printer.printerName}}
+                    </ng-template>
+                </p-dropdown>
+                <div class="mt-4 bg-warning text-dark p-2 col-12" *ngIf="isPrinterOffline">
+                    <span>{{lang.printdialog.error.header}}</span>
+                    <ul>
+                        <li>{{lang.printdialog.error.step1}}</li>
+                        <li>{{lang.printdialog.error.step2}}</li>
+                    </ul>
+                    <span>{{lang.printdialog.error.wait}}</span>
+                    <span class="d-block">{{lang.printdialog.error.anyway}}</span>
+                    <div class="d-flex justify-content-center col-12 mt-2">
+                        <button class="p-button-primary" pButton label="{{lang.printdialog.error.printanyway}}" icon="pi pi-print" (click)="print(true)"></button>
+                    </div>  
+                </div>
+            </div>
+        </ng-template>    
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-print" label="{{lang.printdialog.btnlabel}}" styleClass="p-button-text" (click)="print()" [loading]="isPrinting"></p-button>
+        </ng-template>
+    </p-dialog>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- END PRINT DIRECT DIALOG ------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------- TOAST MESSAGES -----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-sidebar [(visible)]="sideBar" position="right" [baseZIndex]="99999" styleClass="p-sidebar-sm" *ngIf="sideBar">
+        <app-sidebar [lang]="globalLang.sidebar" (data)="updateData($event)"></app-sidebar>
+    </p-sidebar>
+    <p-toast [baseZIndex]="100" position="top-center" [style]="{'opacity':'1'}" *ngIf="responsive"></p-toast>
+    <p-toast [baseZIndex]="100" position="bottom-right" [style]="{'opacity':'1'}" *ngIf="!responsive"></p-toast>
+    <p-toast key="error" [baseZIndex]="100" position="top-left" [style]="{'opacity':'1'}" *ngIf="responsive"></p-toast>
+    <p-toast key="error" [baseZIndex]="100" position="top-right" [style]="{'opacity':'1'}" *ngIf="!responsive"></p-toast>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------- END TOAST MESSAGES -------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------- DROP VIEW -----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div #dropview class="d-flex justify-content-center" (drop)="onDrop($event)" (dragover)="onDropOver($event)" (dragleave)="onDropLeave($event)" *ngIf="isDropping">
+        <div class="d-flex flex-column align-items-center justify-content-center col-12 p-4 rounded myDrop">
+            <div class="d-flex flex-column align-items-center justify-content-center" *ngIf="!isUploadingDrop">
+                <i class="pi pi-cloud-upload" style="font-size: 5rem;" *ngIf="!isLoadingfiles"></i>
+                <span *ngIf="!isLoadingfiles">{{lang.drop.header}}</span>
+                <div class="d-flex flex-column align-items-center justify-content-center" *ngIf="isLoadingfiles">
+                    <p-progressSpinner></p-progressSpinner>
+                    <span>{{lang.drop.loading}}</span>
+                    <span *ngIf="isSeveral">{{lang.drop.several}}</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center col-12" *ngIf="isUploadingDrop">
+                <p-progressSpinner></p-progressSpinner>
+                <span>{{lang.drop.uploading}}</span>
+                <span>{{currentUploadIndex}} {{lang.drop.of}} {{uploadedFiles.length}}</span>
+                <span>{{currentUploadFile.name}}</span>
+                <div class="col-12 mt-2">
+                    <p-progressBar [value]="PercentageUploadedFiles | number:'1.2-2'"></p-progressBar>
+                </div>     
+            </div>
+        </div>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------- END DROP VIEW --------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+</div>

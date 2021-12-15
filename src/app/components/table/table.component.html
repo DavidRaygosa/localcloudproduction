@@ -1,0 +1,284 @@
+<p-scrollTop [threshold]="100"></p-scrollTop>
+<!------------------------------------------------------------ NOT RESPONSIVE TABLE --------------------------------------------------------------------------------->
+<div *ngIf="!responsive" style="overflow-x: hidden;">
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        ----------------------------------------------------------------- PRINCIPAL TABLE ----------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-table
+            #dt 
+            [value]="tableData.files" 
+            [loading]="loading"
+            [(selection)]="selectedFiles"
+            selectionMode="multiple"
+            dataKey="fileID" 
+            styleClass="p-datatable-customers" 
+            [rowHover]="true"
+            [rows]="10" 
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10,25,50]"  
+            [paginator]="true" 
+            currentPageReportTemplate="{{lang.pagination.showing}} {first} {{lang.pagination.to}} {last} {{lang.pagination.of}} {totalRecords} {{lang.pagination.entries}}"
+            [filterDelay]="0"
+            (click)="hideContextMenu(menucontext)"
+            [globalFilterFields]="['fileName','fileType','fileUpdatedDate','fileCreatedDate','fullName']" *ngIf="!loading">
+        <ng-template pTemplate="caption">
+            <div class="d-flex col-12 table-header">
+                <div class="d-flex align-items-center col-6">
+                    <span>{{lang.header.txt}}</span>
+                    <p-confirmPopup></p-confirmPopup>
+                    <button pButton pRipple label="{{lang.header.btndeletefiles}}({{selectedFiles.length}})" icon="pi pi-trash" class="p-button-danger p-button-outlined" [style]="{'margin-left':'1%'}" *ngIf="selectedFiles.length>1" (click)="popupDeleteSelected($event)"></button>
+                </div>
+                <div class="d-flex justify-content-end col-6">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input #searchGlobal pInputText type="text" (input)="dt.filterGlobal(searchGlobal.value, 'contains')" placeholder="{{lang.header.globalsearchplaceholder}}" />
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem"></th>
+                <th pSortableColumn="fileName">{{lang.header.nameth}}<p-sortIcon field="fileName"></p-sortIcon></th>
+                <th pSortableColumn="fileType">{{lang.header.typeth}}<p-sortIcon field="fileType"></p-sortIcon></th>
+                <th pSortableColumn="fileSize">{{lang.header.sizeth}}<p-sortIcon field="fileSize"></p-sortIcon></th>
+                <th pSortableColumn="fileUpdatedDate">{{lang.header.uploadedth}}<p-sortIcon field="fileUpdatedDate"></p-sortIcon></th>
+                <th pSortableColumn="fileCreatedDate">{{lang.header.createdth}}<p-sortIcon field="fileCreatedDate"></p-sortIcon></th>
+                <th pSortableColumn="fullName">{{lang.header.byth}}<p-sortIcon field="fullName"></p-sortIcon></th>
+            </tr>
+            <tr>
+                <th>
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>
+                    <input #searchName pInputText type="text" (input)="dt.filter(searchName.value, 'fileName', 'startsWith')" placeholder="{{lang.header.searchnameph}}" class="p-column-filter">
+                </th>
+                <th>
+                    <input #searchType pInputText type="text" (input)="dt.filter(searchType.value, 'fileType', 'contains')" placeholder="{{lang.header.searchtypeph}}" class="p-column-filter">
+                </th>
+                <th>
+                    <input #searchSize pInputText type="text" (input)="dt.filter(searchSize.value, 'fileSize', 'contains')" placeholder="{{lang.header.searchbysizeph}}" class="p-column-filter">
+                </th>
+                <th>
+                    <p-calendar (onSelect)="onDateUploaded($event)" (onClearClick)="dt.filter('', 'fileUpdatedDate', 'equals')" [showButtonBar]="true" styleClass="p-column-filter" placeholder="{{lang.header.searchuploadedph}}" [readonlyInput]="true"></p-calendar>
+                </th>
+                <th>
+                    <p-calendar (onSelect)="onDateCreated($event)" (onClearClick)="dt.filter('', 'fileCreatedDate', 'equals')" [showButtonBar]="true" styleClass="p-column-filter" placeholder="{{lang.header.searchcreatedph}}" [readonlyInput]="true"></p-calendar>
+                </th>
+                <th>
+                    <input #searchBy pInputText type="text" (input)="dt.filter(searchBy.value, 'fullName', 'contains')" placeholder="{{lang.header.searchbyph}}" class="p-column-filter">
+                </th>
+            </tr>
+            <tr class="folders clickable noselect" *ngFor="let folder of tableData.folders" (dblclick)="addPath(folder.folderName)" (contextmenu)="showContextMenu(folder, $event, menucontext, true)">
+                <th style="width: 3rem"></th>
+                <th><img loading="lazy" alt="Folder" src="../../assets/img/folder_icon.png" width="32"/>{{folder.folderName}}</th>
+                <th colspan="5">{{lang.folder.txt}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-dataUnique>
+            <tr [pSelectableRow]="dataUnique" class="p-selectable-row" (contextmenu)="showContextMenu(dataUnique, $event, menucontext)">
+                <td>
+                    <p-tableCheckbox [pSelectableRow]="dataUnique" [value]="dataUnique"></p-tableCheckbox>
+                </td>
+                <td class="wrap defaultCursor">
+                    <span class="p-column-title"></span>
+                    <img loading="lazy" alt="Logo" src="{{dataUnique.logo}}" width="32" height="32" style="vertical-align: middle; margin-right: 2%;" />
+                    {{dataUnique.fileName}}
+                </td>
+                <td class="defaultCursor">
+                    <span class="p-column-title"></span>
+                    {{dataUnique.fileType}}
+                </td>
+                <td class="defaultCursor">
+                    <span class="p-column-title"></span>
+                    {{dataUnique.fileSize}}
+                </td>
+                <td class="defaultCursor">
+                    <span class="p-column-title"></span>
+                    <span *ngIf="lang.lang=='English'">{{dataUnique.fileUpdatedDate | date: 'MMMM dd yyyy' : undefined : 'en'}}</span>
+                    <span *ngIf="lang.lang=='Spanish'">{{dataUnique.fileUpdatedDate | date: 'dd MMMM yyyy' : undefined : 'es-MX'}}</span>
+                </td>
+                <td class="defaultCursor">
+                    <span class="p-column-title"></span>
+                    <span *ngIf="lang.lang=='English'">{{dataUnique.fileCreatedDate | date: 'MMMM dd yyyy' : undefined : 'en'}}</span>
+                    <span *ngIf="lang.lang=='Spanish'">{{dataUnique.fileCreatedDate | date: 'dd MMMM yyyy' : undefined : 'es-MX'}}</span>
+                </td>
+                <td class="defaultCursor">
+                    <span class="p-column-title"></span>
+                    <img loading="lazy" class="rounded-circle" [alt]="dataUnique.fullName" src="{{dataUnique.image}}" width="32" height="32" style="vertical-align: middle; margin-right: 2%;"/>
+                    <span class="image-text">{{dataUnique.fullName}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7" class="text-center">{{lang.emptyfiles.txt}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ----------------------------------------------------------------- END PRINCIPAL TABLE ------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+</div>
+
+<!----------------------------------------------------------------- RESPONSIVE TABLE --------------------------------------------------------------------------------->
+<div class="col-12" *ngIf="responsive" (click)="hideContextMenu(menucontext)">
+    <div id="table" class="table-responsive">
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        ----------------------------------------------------------------- PRINCIPAL TABLE ----------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+        <table class="table my-resposive-table overflow-hidden">
+            <thead>
+              <tr>
+                <th scope="col" class="p-0"></th>
+                <th scope="col"></th>
+                <th scope="col">{{lang.header.nameth}}</th>
+                <th scope="col">{{lang.header.typeth}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let folder of tableData.folders">
+                <th class="p-0"><button pButton icon="pi pi-cog" class="p-button-text resposive-table-btn" (click)="showContextMenu(folder, $event, menucontext, true, true)"></button></th>
+                <th (click)="addPath(folder.folderName)"><img alt="Folder" src="../../assets/img/folder_icon.png" width="32"/></th>
+                <th (click)="addPath(folder.folderName)">{{folder.folderName}}</th>
+                <th class="resposive-table-btn">{{lang.folder.txt}}</th>
+              </tr>
+              <tr id="fileID{{i}}" *ngFor="let file of TableDataResponsive[paginationNumber]; let i = index">
+                <td class="text-center p-0"><button id="buttonID{{i}}" pButton class="p-button-text" icon="pi pi-cog" (click)="showContextMenu(file, $event, menucontext, false, true)"></button></td>
+                <td><img alt="Logo" src="{{file.logo}}" width="32"/></td>
+                <td class="wrap">
+                    {{file.fileName}}
+                </td>
+                <td>{{file.fileType}}</td>
+              </tr>
+              <tr *ngIf="!tableData.folders.length&&!tableData.files.length">
+                <td colspan="4" class="text-center">
+                    {{lang.emptyfiles.txt}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+        ----------------------------------------------------------------- PRINCIPAL TABLE ----------------------------------------------------------------------------
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    </div>
+    <div class="col-12">
+        <p-paginator [rows]="10" [totalRecords]="tableData.files.length" [pageLinkSize]="3" [rowsPerPageOptions]="[10,25,50]" (onPageChange)="responsivePagination($event)"></p-paginator>
+    </div>
+</div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------- CONTEXT MENU ----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div #menucontext id="menucontext" class="d-none col-10 col-lg-5 col-xl-3 col-xxl-2 position-absolute rounded-3 mypanel px-4 pt-3 pb-1" (window:keyup.esc)="hideContextMenu(menucontext)">
+    <div class="col-12 h-100" *ngIf="isMenuContext">
+        <div id="menucontext-info" class="d-flex flex-column col-12 h-50 justify-content-center align-items-center">
+            <div class="col-12 d-flex justify-content-end">
+                <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined mt-3" (click)="hideContextMenu(menucontext)"></button>
+            </div>
+            <img alt="Logo" src="{{contextFile.logo}}" width="50%" height="50%" style="vertical-align: middle; margin-right: 2%;"/>
+            <div class="d-flex col-12 justify-content-center align-items-center px-3">
+                <div class="col-10 text-center wrap">
+                    <span class="defaultCursor" style="margin-left: 18%;" pTooltip="{{contextFile.fileName}}" tooltipZIndex="9999" tooltipPosition="bottom">{{contextFile.fileName}}</span>
+                </div>
+                <div class="col-2">
+                    <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-outlined" style="margin-left: 2%;" (click)="showchangeFileNameModal(true, menucontext)"></button>
+                </div>
+            </div>
+            <div class="d-flex col-12 justify-content-center p-2" *ngIf="contextFile.image!=null">
+                <img class="rounded-circle" [alt]="contextFile.image" src="{{contextFile.image}}" width="32" height="32" style="vertical-align: middle; margin-right: 2%;"/>
+                <span class="image-text defaultCursor">{{contextFile.fullName}}</span>
+            </div>
+            <div class="col-12 text-center wrap">
+                <span class="defaultCursor" pTooltip="{{contextFile.fullPath}}" tooltipZIndex="9999" tooltipPosition="bottom">{{contextFile.fullPath}}</span>
+            </div>
+        </div>
+        <div id="menucontext-controlls" class="col-12 h-50 px-4 p-2" >
+            <div class="d-flex flex-column justify-content-evenly align-items-center col-12 h-100">
+                <button pButton pRipple label="{{lang.contextmenu.btndownload}}" type="button" icon="pi pi-download" iconPos="right" class="p-button-success p-button-outlined col-12" (click)="downloadFile(contextFile.fileID, menucontext)"></button>
+                <button pButton pRipple label="{{lang.contextmenu.btnprint}}" type="button" icon="pi pi-print" iconPos="right" class="p-button-primary p-button-outlined col-12" (click)="printFile(contextFile, menucontext)" *ngIf="contextFile.isPrintable"></button>
+                <p-confirmPopup></p-confirmPopup>
+                <button pButton pRipple label="{{lang.contextmenu.btndelete}}" type="button" icon="pi pi-trash" iconPos="right" class="p-button-danger p-button-outlined col-12" (click)="popupEvent($event, contextFile.fileID)"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- END CONTEXT MENU ----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- CHANGE NAME DIALOG ----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<p-dialog header="{{lang.dialog.header}}" [(visible)]="displayMaximizableChangeName" [modal]="true" styleClass="col-12 col-lg-4 col-xl-3" [maximizable]="true" [baseZIndex]="20" [draggable]="false" [resizable]="true" (window:keyup.esc)="displayMaximizableChangeName=false">
+    <ng-template pTemplate="content">
+        <form class="col-12" #changeNameForm="ngForm" (submit)="onSubmitName($event, changeFileName, changeNameForm)">
+            <div class="d-flex justify-content-center align-items-center col-12 px-0 py-5 p-lg-4">
+                    <span class="p-float-label p-input-icon-left col-12">
+                        <i class="pi pi-folder"></i>
+                        <input pInputText #changeFileName class="col-12" type="text" id="inputtext-left" name="changeFileName" id="FileNameInput" [(ngModel)]="contextFile.changeName" ngModel required> 
+                        <label for="inputtext-left">{{lang.dialog.placeholderinput}}</label>
+                    </span>
+            </div>
+            <div class="d-flex justify-content-end align-items-center col-12 p-0 p-lg-2 mt-4 mt-lg-0">
+                <button class="p-button-danger p-button-outlined" pButton type="button" label="{{lang.dialog.btncancel}}" icon="pi pi-times" [style]="{'margin-right':'2%'}" (click)="showchangeFileNameModal(false, null)"></button>
+                <button class="p-button-success p-button-outlined" pButton type="submit" label="{{lang.dialog.btnsubmit}}" icon="pi pi-upload" [disabled]="!changeNameForm.valid"></button>
+            </div>   
+        </form>
+    </ng-template>
+</p-dialog>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- END CHANGE NAME DIALOG ------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- PRINT FILE DIALOG ----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<p-dialog header="{{lang.printdialog.header}}" [(visible)]="displayPrintDialog" [modal]="true" styleClass="col-12 col-lg-4" [maximizable]="true" [baseZIndex]="20" [draggable]="false" [resizable]="true" [contentStyle]="{height: '100vh'}" (window:keyup.esc)="displayPrintDialog=false" *ngIf="displayPrintDialog">
+    <ng-template pTemplate="content">
+        <div class="d-flex flex-column my-print-dialog align-items-center h-100 col-12">
+            <span class="mb-3">"{{contextFile.fileName}}.{{contextFile.fileType.toLowerCase()}}"</span>
+            <h5 class="mb-2">{{lang.printdialog.select}}</h5>
+            <p-dropdown [options]="printersList" [(ngModel)]="selectedPrinter" optionLabel="printerName">
+                <ng-template let-printer pTemplate="item">
+                    <i class="pi pi-check-circle mr-2 text-success"*ngIf="printer.printerStatus=='Online'"></i>
+                    <i class="pi pi-ban mr-2 text-danger"*ngIf="printer.printerStatus=='Offline'"></i>
+                    {{printer.printerName}}
+                </ng-template>
+            </p-dropdown>
+            <div class="mt-4 bg-warning text-dark p-2 col-12" *ngIf="isPrinterOffline">
+                <span>{{lang.printdialog.error.header}}</span>
+                <ul>
+                    <li>{{lang.printdialog.error.step1}}</li>
+                    <li>{{lang.printdialog.error.step2}}</li>
+                </ul>
+                <span>{{lang.printdialog.error.wait}}</span>
+                <span class="d-block">{{lang.printdialog.error.anyway}}</span>
+                <div class="d-flex justify-content-center col-12 mt-2">
+                    <button class="p-button-primary" pButton label="{{lang.printdialog.error.printanyway}}" icon="pi pi-print" (click)="print(true)"></button>
+                </div>
+            </div>
+        </div>
+    </ng-template>    
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-print" label="{{lang.printdialog.btnlabel}}" styleClass="p-button-text" (click)="print()"></p-button>
+    </ng-template>
+</p-dialog>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- END PRINT FILE DIALOG ------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------- TOAST MESSAGES ----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="my-downloading-message" class="col-12 col-lg-2 p-4 rounded-start d-flex justify-content-center align-items-center" *ngIf="isDownloading">
+    <img loading="lazy" alt="building" src="../../assets/img/crafting.gif" width="45"/>
+    <span style="margin-left: 2%;">{{downloadingMessage}}</span>
+</div>
+<p-toast key="error" [baseZIndex]="100" position="top-left" [style]="{'opacity':'1'}" *ngIf="responsive"></p-toast>
+<p-toast key="error" [baseZIndex]="100" position="top-right" [style]="{'opacity':'1'}" *ngIf="!responsive"></p-toast>
+<p-toast key="success" [baseZIndex]="100" position="top-left" [style]="{'opacity':'1'}" *ngIf="responsive"></p-toast>
+<p-toast key="success" [baseZIndex]="100" position="top-right" [style]="{'opacity':'1'}" *ngIf="!responsive"></p-toast>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------- END TOAST MESSAGES -------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->

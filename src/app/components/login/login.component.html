@@ -1,0 +1,160 @@
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------- PARALLAX --------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="scene" class="w-100 h-100 general-background">
+    <div data-depth="0.2" class="background"></div>
+</div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------ END PARALLAX -----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<main class="col-12 position-absolute">
+    
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- LOGIN TEMPLATE --------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div class="d-flex blur">
+        <article class="col-11 col-lg-5 col-xl-4 my-login-panel m-auto">
+            <form class="px-0 px-lg-5 py-2 h-100" #loginform="ngForm" (submit)="onSubmit($event)">
+                <header class="d-flex justify-content-center align-items-center col-12 p-3">
+                    <i class="d-block pi pi-cloud" style="font-size: 2.5rem; margin-right: 5%; color:var(--primary-color)"></i>
+                    <span class="d-block" style="font-size: 1.5rem;">{{lang.header}}</span>
+                </header>
+                <section class="d-flex flex-column justify-content-around col-12 h-75 p-1">
+                    <hr>
+                    <div class="col-12 p-2">
+                        <span class="col-12 p-float-label p-input-icon-left">
+                            <i class="pi pi-envelope"></i>
+                            <input class="col-12" type="email" id="loginEmail" name="loginUser" ngModel required pInputText> 
+                            <label for="loginEmail">{{lang.email}}</label>
+                        </span>
+                    </div>
+
+                    <div class="col-12 p-2">
+                        <span class="col-12 p-float-label p-input-icon-left">
+                            <i class="pi pi-key"></i>
+                            <input class="col-12" type="password" id="loginPassword" name="loginPassword" ngModel required pInputText> 
+                            <label for="loginPassword">{{lang.password}}</label>
+                        </span>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row col-12 align-items-center px-2">
+                        <div class="d-flex justify-content-start col-12 col-md-6">
+                            <p-checkbox [(ngModel)]="isDark" (onChange)="changeTheme($event)" [binary]="loginDark" inputId="checkboxDarkMode" name="checkboxDarkMode"></p-checkbox>
+                            <label for="checkboxDarkMode">{{lang.darkmode}}</label>
+                        </div>
+                        <div class="d-flex justify-content-end col-12 col-md-6">
+                            <p-dropdown [options]="langs" optionLabel="lang" (onChange)="changeLang($event)" *ngIf="langs.length>0">
+                                <ng-template let-langs pTemplate="item">
+                                    <img loading="lazy" src="{{langs.image}}" width="30px" height="20px"/>
+                                    {{langs.lang}}
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center col-12 p-2">
+                        <div class="d-flex align-items-center h-100">
+                            <p-checkbox [(ngModel)]="checked" [value]="true" inputId="checkboxRemember" name="checkboxRemember"></p-checkbox>
+                            <label for="checkboxRemember">{{lang.rememberme}}</label>
+                        </div>
+                        <button type="submit" pButton label="{{lang.login}}" icon="pi pi-chevron-right" iconPos="right" [loading]="isLoading" [disabled]="!loginform.valid"></button>
+                    </div>
+                    
+                    <a class="p-2 register" (click)="register(true)"><small>{{lang.noaccount}}</small></a>
+                </section>
+            </form>
+        </article>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- END LOGIN TEMPLATE ----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- REGISTER TEMPLATE ------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-dialog header="{{lang.register.header}}" [(visible)]="displayMaximizable" [modal]="true" styleClass="col-12 col-lg-6" [maximizable]="true" [baseZIndex]="9" [draggable]="false" [resizable]="true">  
+        <form class="d-flex flex-column justify-content-between col-12 h-100 my-form p-0 p-lg-5" #registerform="ngForm" (submit)="onSubmitRegister($event)">
+                    <div class="p-field col-12 p-0 p-lg-2">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-id-card"></i>
+                            </span>
+                            <span class="p-float-label">
+                                <input type="text" id="nameRegister" name="nameRegister" ngModel required pInputText> 
+                                <label for="nameRegister">{{lang.register.name}}</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-field col-12 p-0 p-lg-2">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-id-card"></i>
+                            </span>
+                            <span class="p-float-label">
+                                <input type="text" id="registerLastname" name="registerLastname" ngModel required pInputText> 
+                                <label for="registerLastname">{{lang.register.lastname}}</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-field col-12 p-0 p-lg-2">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-envelope"></i>
+                            </span>
+                            <span class="p-float-label">
+                                <input type="email" id="registerEmail" name="registerEmail" ngModel required pInputText> 
+                                <label for="registerEmail">{{lang.register.email}}</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-field w-100 p-0 p-lg-2">
+                        <div class="p-inputgroup w-100">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-key"></i>
+                            </span>
+                            <span class="w-100">
+                                <p-password inputId="registerPassword" weakLabel="{{lang.register.weakLabel}}" mediumLabel="{{lang.register.mediumLabel}}" strongLabel="{{lang.register.strongLabel}}" [strongRegex]="strongRegex" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"  placeholder="Password" name="registerPassword" [(ngModel)]="DOMregisterPassword" ngModel required>
+                                    <ng-template pTemplate="footer">
+                                        <ul>
+                                            <li>{{lang.register.lowercase}}</li>
+                                            <li>{{lang.register.uppercase}}</li>
+                                            <li>{{lang.register.numeric}}</li>
+                                            <li>{{lang.register.specialcharacter}}</li>
+                                            <li>{{lang.register.minimum}}</li>
+                                        </ul>
+                                    </ng-template>
+                                </p-password>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-field col-12 p-0 p-lg-2">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-user"></i>
+                            </span>
+                            <span class="p-float-label">
+                                <input type="text" id="registerUsername" name="registerUsername" ngModel required pInputText> 
+                                <label for="registerUsername">Username</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end col-12">
+                        <button class="p-button-danger p-button-outlined" type="button" pButton icon="pi pi-times" label="{{lang.register.cancel}}" [style]="{'margin-right':'2%'}" (click)="register(false)" [loading]="isRegistring"></button>
+                        <button class="p-button-success p-button-outlined" type="submit" pButton icon="pi pi-check"  label="{{lang.register.register}}" [disabled]="!registerform.valid" [loading]="isRegistring"></button>
+                    </div>
+                </form>
+    </p-dialog>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- END REGISTER TEMPLATE --------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- TOAST MESSAGES ------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <p-toast [baseZIndex]="10" position="top-center" *ngIf="responsive"></p-toast>
+    <p-toast [baseZIndex]="10" position="top-right" *ngIf="!responsive"></p-toast>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------- END TOAST MESSAGES ----------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+</main>

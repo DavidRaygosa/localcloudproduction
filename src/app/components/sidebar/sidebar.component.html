@@ -1,0 +1,153 @@
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------- SPINNER --------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div class="d-flex col-12 justify-content-center" *ngIf="isLoading">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------- END SPINNER-----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="d-flex flex-column col-12 myheight" *ngIf="!isLoading">
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- DATA --------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div id="image" class="d-flex flex-column col-12 justify-content-start align-items-center px-4 py-1">
+        <div id="Image" class="d-flex col-12 justify-content-center align-items-center">
+            <img loading="lazy" id="imageProfile" class="rounded-circle" alt="Profile" src="{{user.image}}" width="50%" height="120px" style="margin-right: 2%;"/>
+            <div class="justify-content-center align-items-center overlayImage rounded-circle" (click)="lauchFileInput(inputFile)">{{lang.image.change}}</div>
+        </div>
+        <input #inputFile id="fileupload" style='display: none;' type="file" accept="image/*" (change)="handleUpload($event)"/>
+        <div id="data" class="d-flex col-12 justify-content-center"> 
+            <div class="d-flex flex-column col-12 align-items-center">
+                <div class="col-12 d-flex flex-column">
+                    <div class="col-12 d-flex flex-row align-items-center" *ngIf="!editFullname">
+                        <div class="d-flex justify-content-center col-10 myoverflow">
+                            <h4 class="mt-2">{{user.fullName}}</h4>
+                        </div>
+                        <div class="col-2">
+                            <button pButton pRipple type="button" icon="pi pi-fw pi-pencil" class="p-button-rounded p-button-success p-button-text" (click)="edit('fullname',true)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center col-12 mt-4 mb-3" *ngIf="editFullname">
+                    <form class="col-12" #updateName="ngForm" (submit)="onSubmitFullName(updateName)">
+                        <span class="p-float-label p-input-icon-left col-9">
+                            <i class="pi pi-user-edit"></i>
+                            <input type="text" id="fullNameInput" pInputText [style]="{'width':'100%'}" name="FullName" [(ngModel)]="user.fullName" required> 
+                            <label for="fullNameInput">{{lang.image.changenameinput}}</label>
+                        </span>
+                        <button pButton pRipple type="submit" icon="pi pi-fw pi-check" class="p-button-rounded p-button-help p-button-text col-3" [disabled]="!updateName.valid"></button>
+                        <hr>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-center col-12">
+                    <button pButton pRipple type="button" label="{{lang.password.btnchange}}" class="p-button-outlined p-button-help" (click)="editPassword(true)" *ngIf="!editPass"></button>
+                    <div class="col-12" *ngIf="editPass">
+                        <form class="col-12 d-flex flex-column justify-content-center mt-4" #updatePassword="ngForm" (submit)="onSubmitPassword(updatePassword, currentpassword, password)">
+                            <p-password #currentpassword inputId="currentPassword" weakLabel="{{lang.ppassword.weakLabel}}" mediumLabel="{{lang.ppassword.mediumLabel}}" strongLabel="{{lang.ppassword.strongLabel}}" [strongRegex]="strongRegex" [toggleMask]="true" [style]="{'width':'100%', 'margin-bottom':'2%'}" [inputStyle]="{'width':'100%'}"  placeholder="{{lang.password.currentplaceholder}}" name="currentPassword" ngModel required>
+                                <ng-template pTemplate="footer">
+                                    <ul>
+                                        <li>{{lang.ppassword.lowercase}}</li>
+                                        <li>{{lang.ppassword.uppercase}}</li>
+                                        <li>{{lang.ppassword.numeric}}</li>
+                                        <li>{{lang.ppassword.specialcharacter}}</li>
+                                        <li>{{lang.ppassword.minimum}}</li>
+                                    </ul>
+                                </ng-template>
+                            </p-password>
+                            <p-password #password inputId="newPassword" weakLabel="{{lang.ppassword.weakLabel}}" mediumLabel="{{lang.ppassword.mediumLabel}}" strongLabel="{{lang.ppassword.strongLabel}}" [strongRegex]="strongRegex" [toggleMask]="true" [style]="{'width':'100%', 'margin-bottom':'2%'}" [inputStyle]="{'width':'100%'}"  placeholder="{{lang.password.newplaceholder}}" name="newPassword" ngModel required>
+                                <ng-template pTemplate="footer">
+                                    <ul>
+                                        <li>{{lang.ppassword.lowercase}}</li>
+                                        <li>{{lang.ppassword.uppercase}}</li>
+                                        <li>{{lang.ppassword.numeric}}</li>
+                                        <li>{{lang.ppassword.specialcharacter}}</li>
+                                        <li>{{lang.ppassword.minimum}}</li>
+                                    </ul>
+                                </ng-template>
+                            </p-password>
+                            <button pButton pRipple type="submit" label="{{lang.password.btnupdate}}" class="p-button-help col-12" [disabled]="!updatePassword.valid"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- END DATA --------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- SETTINGS --------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div id="settings" class="d-flex flex-column col-12 justify-content-start align-items-center px-4 py-2 mt-4">
+        <div class="d-flex flex-column col-12">
+            <h4 class="d-flex align-items-end justify-content-end col-12">{{lang.settings.txt}}</h4>
+            <hr class="col-12"/>
+        </div>
+        <div class="d-flex col-12 py-4">
+            <span>{{lang.settings.darktxt}}</span><p-inputSwitch (onChange)="changeTheme($event)" [(ngModel)]="checked" [style]="{'margin-left': '5%'}"></p-inputSwitch>
+        </div>
+        <div class="d-flex align-items-center col-12 py-4">
+            <span>{{lang.settings.langtxt}}</span><p-dropdown [options]="langs" [(ngModel)]="selectedLang" (onChange)="changeLang()" optionLabel="lang">
+                <ng-template pTemplate="selectedItem">
+                        <img loading="lazy" src="{{user.languageImage.image}}" width="30px" height="20px"/>
+                        {{user.languageImage.lang}}
+                </ng-template>
+                <ng-template let-langs pTemplate="item">
+                    <img loading="lazy" src="{{langs.image}}" width="30px" height="20px"/>
+                    {{langs.lang}}
+                </ng-template>
+            </p-dropdown>
+        </div>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------- END SETTINGS ---------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------ INFO -------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div id="about" class="d-flex flex-column col-12 mt-2 px-4 py-2">
+        <div class="d-flex flex-column col-12">
+            <h4 class="d-flex align-items-end justify-content-end col-12">{{lang.about.txt}}</h4>
+            <hr class="col-12"/>
+        </div>
+        <div class="col-12">
+            <div class="col-12 d-flex justify-content-center flex-wrap">
+                <li *ngFor="let logo of logos" style="list-style: none; margin-right: 2%; margin-bottom: 2%;">
+                    <img loading="lazy" title="{{logo.alt}}" src="{{logo.path}}" width="50px" height="50px"/>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
+        <small>{{lang.about.dev}}<a href="https://github.com/DavidRaygosa">David Raygosa</a></small>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------ END INFO ----------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------ LOGOUT ----------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div id="logout" class="d-flex flex-column justify-content-center col-12 mt-4 px-4 py-2">
+        <hr class="col-12"/>
+        <button pButton pRipple type="button" label="{{lang.logout.btntxt}}" class="p-button-danger col-12" (click)="closeSession()"></button>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------ END LOGOUT -------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+</div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------- TOAST MESSAGES -------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<p-toast key="error" [baseZIndex]="100" position="top-left" [style]="{'opacity':'1'}" *ngIf="responsive"></p-toast>
+<p-toast key="error" [baseZIndex]="100" position="top-right" [style]="{'opacity':'1'}" *ngIf="!responsive"></p-toast>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------- END TOAST MESSAGES ---------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------->

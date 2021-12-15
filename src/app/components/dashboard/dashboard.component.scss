@@ -1,0 +1,83 @@
+.my-container{
+    height: 93%;
+}
+
+:host ::ng-deep .p-chip.custom-chip {
+    cursor: pointer;
+}
+
+.panel{
+    height: 92.5%;
+}
+
+#diskUsagePanel{
+    background-color: transparent;
+}
+
+.myDrop{
+    position: fixed;
+    height: 100%;
+    top: 0%;
+    background-color: var(--surface-d);
+    border: 1px solid var(--text-color);
+    border-style: dashed;
+    opacity: 0.98;
+    z-index: 99999; 
+}
+
+.myDrop i{
+    animation: dropanimation 2s infinite;
+}
+
+.my-print-dialog{
+    justify-content: center;
+}
+
+@keyframes dropanimation {
+    0%{
+        transform: translateY(0%);
+    }
+    50%{
+        transform: translateY(-20%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .myjustify{
+        justify-content: start !important;
+    }
+    #diskUsagePanel {
+        background-color: var(--surface-a);
+    }
+    .my-print-dialog{
+        justify-content: start;
+    }
+    :host ::ng-deep .p-fileupload-buttonbar {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        .p-button.p-fileupload-choose{
+            width: 100%;
+            margin-right: 0%;
+        }
+        p-button{
+            background-color: transparent;
+            width: 100%;
+            margin-top: 1rem;
+            -webkit-appearance: none !important;
+            button{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .p-fileupload-content{
+        width: 20%;
+    }
+}
