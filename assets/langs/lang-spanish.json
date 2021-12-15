@@ -1,0 +1,229 @@
+{
+    "login":{
+        "header": "Ingresar",
+        "email": "Email",
+        "password": "Contraseña",
+        "darkmode": "Modo Oscuro",
+        "rememberme": "Recordarme",
+        "noaccount": "¿No tienes una cuenta? ¡Registrate Aqui!",
+        "login": "Ingresar",
+        "register":{
+            "header": "Registrar",
+            "name": "Nombre",
+            "lastname": "Apellido",
+            "email": "Email",
+            "username": "Username",
+            "cancel": "Cancelar",
+            "register": "Registrar",
+            "weakLabel": "Bajo",
+            "mediumLabel": "Medio",
+            "strongLabel": "Fuerte",
+            "lowercase": "Al menos una en minuscula",
+            "uppercase": "Al menos una en mayuscula",
+            "numeric": "Al menos un numero",
+            "specialcharacter": "Al menos un caracter especial",
+            "minimum": "Minimo 8 caracteres"
+        },
+        "error":{
+            "emailexists": "El email ya esta en uso",
+            "usernameexists": "El username ya esta en uso",
+            "passwordshort": "La contraseña debe ser: Fuerte",
+            "usernotexists": "El usuario no existe",
+            "passwordnotmatch": "La contraseña no coincide"
+        }
+    },
+    "dashboard":{
+        "menubar": {
+            "file": {
+                "label": "Archivo",
+                "itemslabel": "Subir Archivo"
+            },
+            "folder":{
+                "label": "Carpeta",
+                "itemslabel": "Crear Carpeta" 
+            },
+            "Printer":{
+                "label": "Imprimir",
+                "itemslabel": "Impresion Directa"   
+            }
+        },
+        "breadcrumb":{
+            "home": "Casa"
+        },
+        "dropdowndisk":{
+            "text": "Disco"
+        },
+        "progressBar":{
+            "text": "Uso del disco:"
+        },
+        "dialogfileupload":{
+            "header": "Subir Archivos",
+            "uploadingtxt": "Subiendo",
+            "exceeds": "Supera los 4gb permitidos",
+            "totalsize": "Tamaño total permitido: 4Gb"
+        },
+        "fileUpload":{
+            "uploadLabel": "Subir",
+            "cancelLabel": "Cancelar",
+            "chooseLabel": "Buscar"
+        },
+        "dialogcreatefolder":{
+            "header": "Crear Carpeta",
+            "textinput": "Nombre de la carpeta",
+            "btncancel": "Cancelar",
+            "btnsubmit": "Crear"
+        },
+        "printdialog":{
+            "header": "Imprimir",
+            "select": "Seleccione una Impresora",
+            "selectfile": "Seleccione un archivo",
+            "error":{
+                "header": "Esta impresora esta offline",
+                "step1": "Por favor encienda la impresora",
+                "step2": "Abra de nuevo el panel de impresion",
+                "wait": "A veces el programa tarda en reconocer",
+                "anyway": "Si quieres continuar de todos modos, haga clic en el botón de abajo",
+                "printanyway": "Imprimir de todos modos",
+                "notprintable": "Este archivo no se puede imprimir. Seleccione otro."
+            },
+            "choosebtn": "Buscar",
+            "btnlabel": "Imprimir"
+        },
+        "drop":{
+            "header": "Suelta los archivos aqui para subir",
+            "loading": "Leyendo Archivos",
+            "several": "Esto podria tomar varios minutos. Por favor espere.",
+            "uploading": "Subiendo",
+            "of": "de"
+        },
+        "errormessage":{
+            "summary": "Un error ha ocurrido!",
+            "diskfull": "Accion Imposible. El disco esta lleno",
+            "folderexists": "El nombre de la carpeta existe, elija otro.",
+            "whitspaces": "El nombre de la carpeta no puede solo contener espacios",
+            "forbidden": "El nombre de la carpeta contiene caracteres prohibidos"
+        },
+        "successmessage":{
+            "welcomeback": "¡Bienvenido de nuevo!",
+            "firslogin": "¡Ya estas registrado! Sientete como en las nubes :)",
+            "printing": "Enviado a imprimir"
+        }
+    },
+    "sidebar":{
+        "image":{
+            "change": "Cambiar Foto",
+            "changenameinput": "Nombre Completo"
+        },
+        "password":{
+            "btnchange": "Cambiar Contreseña",
+            "currentplaceholder": "Actual Contraseña",
+            "newplaceholder": "Nueva Contraseña",
+            "btnupdate": "Actualizar Contraseña"
+        },
+        "ppassword":{
+            "weakLabel": "Bajo",
+            "mediumLabel": "Medio",
+            "strongLabel": "Fuerte",
+            "lowercase": "Al menos una en minuscula",
+            "uppercase": "Al menos una en mayuscula",
+            "numeric": "Al menos un numero",
+            "specialcharacter": "Al menos un caracter especial",
+            "minimum": "Minimo 8 caracteres"
+        },
+        "settings":{
+            "txt": "-Ajustes",
+            "darktxt": "Modo Oscuro",
+            "langtxt": "Lenguaje" 
+        },
+        "about":{
+            "txt": "-Acerca",
+            "dev": "WebAPP desarrollada por "
+        },
+        "logout":{
+            "btntxt": "Cerrar Sesion"
+        }
+    },
+    "table":{
+        "lang": "Spanish",
+        "header":{
+            "txt": "Lista de Archivos",
+            "btndeletefiles": "Eliminar",
+            "globalsearchplaceholder": "Busqueda Global",
+            "nameth": "Nombre",
+            "typeth": "Tipo",
+            "sizeth": "Tamaño",
+            "uploadedth": "Subido",
+            "createdth": "Creado",
+            "byth": "Por",
+            "searchnameph": "Buscar por Nombre",
+            "searchtypeph": "Buscar por Tipo",
+            "searchbysizeph": "Buscar por Tamaño",
+            "searchuploadedph": "Fecha de Subida",
+            "searchcreatedph": "Fecha de Creado",
+            "searchbyph": "Buscar por Nombre"
+        },
+        "folder":{
+            "txt": "Carpeta"
+        },
+        "emptyfiles":{
+            "txt": "Nada Encontrado."
+        },
+        "contextmenu":{
+            "btndownload": "Descargar",
+            "btndelete": "Eliminar",
+            "btnprint": "Imprimir"
+        },
+        "deleteconfirm":{
+            "txt": "¿Esta seguro que desea continuar?",
+            "acceptLabel": "Si",
+            "rejectLabel": "No"
+        },
+        "dialog":{
+            "header": "Cambiar Nombre",
+            "placeholderinput": "Nombre",
+            "btncancel": "Cancelar",
+            "btnsubmit": "Actualizar"
+        },
+        "printdialog":{
+            "header": "Imprimir",
+            "select": "Seleccione una Impresora",
+            "error":{
+                "header": "Esta impresora esta offline",
+                "step1": "Porfavor encienda la impresora",
+                "step2": "Abra de nuevo el panel de impresion",
+                "wait": "A veces el programa tarda en reconocer",
+                "anyway": "Si quieres continuar de todos modos, haga clic en el botón de abajo",
+                "printanyway": "Imprimir de todos modos"
+            },
+            "btnlabel": "Imprimir",
+            "printing": "Enviado a imprimir"
+        },
+        "downloading":{
+            "initializing": "Inicializando",
+            "preparing": "Preparando archivo",
+            "downloading": "Descargando"
+        },
+        "errormessage":{
+            "summary": "Un Error Ha Ocurrido!",
+            "folderexists": "El nombre de la carpeta existe, elija otro.",
+            "whitespaces": "El nombre de la carpeta no puede contener solo espacios",
+            "forbidden": "El nombre de la carpeta contiene caracteres prohibidos"
+        },
+        "pagination":{
+            "showing": "Mostrando",
+            "to": "a",
+            "of": "de",
+            "entries": "registros"
+        },
+        "calendar_lang":{
+            "dayNames": ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+            "dayNamesShort": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+            "dayNamesMin": ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+            "monthNames": [ "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre" ],
+            "monthNamesShort": [ "Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+            "today": "Hoy",
+            "clear": "Limpiar",
+            "weekHeader": "sm"
+        }
+    }
+}

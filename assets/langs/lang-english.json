@@ -1,0 +1,229 @@
+{
+    "login":{
+        "header": "Log In",
+        "email": "Email",
+        "password": "Password",
+        "darkmode": "Dark Mode",
+        "rememberme": "Remember Me",
+        "noaccount": "Not have account? Register Here!",
+        "login": "Log In",
+        "register":{
+            "header": "Register",
+            "name": "Name",
+            "lastname": "Lastname",
+            "email": "Email",
+            "username": "Username",
+            "cancel": "Cancel",
+            "register": "Register",
+            "weakLabel": "Weak",
+            "mediumLabel": "Medium",
+            "strongLabel": "Strong",
+            "lowercase": "At least one lowercase",
+            "uppercase": "At least one uppercase",
+            "numeric": "At least one numeric",
+            "specialcharacter": "At least one special character",
+            "minimum": "Minimum 8 characters"
+        },
+        "error":{
+            "emailexists": "Email is already in use",
+            "usernameexists": "Username is already in use",
+            "passwordshort": "Password mut be: Strong",
+            "usernotexists": "User Not Exists",
+            "passwordnotmatch": "Password not match"
+        }
+    },
+    "dashboard":{
+        "menubar": {
+            "file": {
+                "label": "File",
+                "itemslabel": "Upload File"
+            },
+            "folder":{
+                "label": "Folder",
+                "itemslabel": "Create Folder" 
+            },
+            "Printer":{
+                "label": "Printer",
+                "itemslabel": "Print Direct"   
+            }
+        },
+        "breadcrumb":{
+            "home": "home"
+        },
+        "dropdowndisk":{
+            "text": "Select Disk"
+        },
+        "progressBar":{
+            "text": "Disk Used:"
+        },
+        "dialogfileupload":{
+            "header": "Upload Files",
+            "uploadingtxt": "Uploading",
+            "exceeds": "Exceeds 4gb allowed",
+            "totalsize": "Total size allowed: 4Gb"
+        },
+        "printdialog":{
+            "header": "Print",
+            "select": "Select a Printer",
+            "selectfile": "Select a file",
+            "error":{
+                "header": "This printer is offline",
+                "step1": "Please turn on the printer",
+                "step2": "Open again the print panel",
+                "wait": "Sometimes the program takes time to recognize",
+                "anyway": "If you want to continue anyway, click the button below",
+                "printanyway": "Print Anyway",
+                "notprintable": "This file can not be printed. Select another."
+            },
+            "choosebtn": "Choose",
+            "btnlabel": "Print"
+        },
+        "fileUpload":{
+            "uploadLabel": "Upload",
+            "cancelLabel": "Cancel",
+            "chooseLabel": "Choose"
+        },
+        "dialogcreatefolder":{
+            "header": "Create Folder",
+            "textinput": "Folder Name",
+            "btncancel": "Cancel",
+            "btnsubmit": "Create"
+        },
+        "drop":{
+            "header": "Drop files here to upload",
+            "loading": "Loading Files",
+            "several": "This can take several minutes. Please wait.",
+            "uploading": "Uploading",
+            "of": "of"
+        },
+        "errormessage":{
+            "summary": "An Error Ocurred!",
+            "diskfull": "Impossible Action. The disk is full",
+            "folderexists": "Folder name exists, choose another.",
+            "whitspaces": "The folder name can not only contains whitespace",
+            "forbidden": "The folder name contains a forbidden character"
+        },
+        "successmessage":{
+            "welcomeback": "Welcome Back!",
+            "firslogin": "You are already registered! Feel like a clouds :)",
+            "printing": "Sent to print"
+        }
+    },
+    "sidebar":{
+        "image":{
+            "change": "Change Photo",
+            "changenameinput": "Full Name"
+        },
+        "password":{
+            "btnchange": "Change Password",
+            "currentplaceholder": "Current Password",
+            "newplaceholder": "New Password",
+            "btnupdate": "Update Password"
+        },
+        "ppassword":{
+            "weakLabel": "Weak",
+            "mediumLabel": "Medium",
+            "strongLabel": "Strong",
+            "lowercase": "At least one lowercase",
+            "uppercase": "At least one uppercase",
+            "numeric": "At least one numeric",
+            "specialcharacter": "At least one special character",
+            "minimum": "Minimum 8 characters"
+        },
+        "settings":{
+            "txt": "-Settings",
+            "darktxt": "Dark Mode",
+            "langtxt": "Language" 
+        },
+        "about":{
+            "txt": "-About",
+            "dev": "WebAPP developed by "
+        },
+        "logout":{
+            "btntxt": "Logout"
+        }
+    },
+    "table":{
+        "lang": "English",
+        "header":{
+            "txt": "File List",
+            "btndeletefiles": "Delete",
+            "globalsearchplaceholder": "Global Search",
+            "nameth": "Name",
+            "typeth": "Type",
+            "sizeth": "Size",
+            "uploadedth": "Uploaded",
+            "createdth": "Created",
+            "byth": "By",
+            "searchnameph": "Search by Name",
+            "searchtypeph": "Search by Type",
+            "searchbysizeph": "Search by Size",
+            "searchuploadedph": "Uploaded Date",
+            "searchcreatedph": "Created Date",
+            "searchbyph": "Search by Full Name"
+        },
+        "folder":{
+            "txt": "Folder"
+        },
+        "emptyfiles":{
+            "txt": "Nothing found."
+        },
+        "contextmenu":{
+            "btndownload": "Download",
+            "btndelete": "Delete",
+            "btnprint": "Print"
+        },
+        "deleteconfirm":{
+            "txt": "Are you sure that you want to proceed?",
+            "acceptLabel": "Yes",
+            "rejectLabel": "No"
+        },
+        "dialog":{
+            "header": "Change Name",
+            "placeholderinput": "Name",
+            "btncancel": "Cancel",
+            "btnsubmit": "Update"
+        },
+        "printdialog":{
+            "header": "Print",
+            "select": "Select a Printer",
+            "error":{
+                "header": "This printer is offline",
+                "step1": "Please turn on the printer",
+                "step2": "Open again the print panel",
+                "wait": "Sometimes the program takes time to recognize",
+                "anyway": "If you want to continue anyway, click the button below",
+                "printanyway": "Print Anyway"
+            },
+            "btnlabel": "Print",
+            "printing": "Sent to print"
+        },
+        "downloading":{
+            "initializing": "Initializing",
+            "preparing": "Preparing file",
+            "downloading": "Downloading"
+        },
+        "errormessage":{
+            "summary": "An Error Ocurred!",
+            "folderexists": "Folder name exists, choose another.",
+            "whitespaces": "The folder name can not only contains whitespace",
+            "forbidden": "The folder name contains a forbidden character"
+        },
+        "pagination":{
+            "showing": "Showing",
+            "to": "to",
+            "of": "of",
+            "entries": "entries"
+        },
+        "calendar_lang":{
+            "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            "dayNamesMin": ["Su","Mo","Tu","We","Th","Fr","Sa"],
+            "monthNames": [ "January","February","March","April","May","June","July","August","September","October","November","December" ],
+            "monthNamesShort": [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+            "today": "Today",
+            "clear": "Clear",
+            "weekHeader": "Wk"
+        }
+    }
+}
